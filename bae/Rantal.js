@@ -4,22 +4,21 @@ import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-n
 
 const Rantal = ({ navigation }) => {
   const [model, setModel] = useState('전동 휠체어 모델 A');
-  const [price, setPrice] = useState(5000); // 예시 금액 (원)
   const [imageUri, setImageUri] = useState('https://example.com/wheelchair.jpg'); // 예시 이미지 URL
 
+  // 대여하기 버튼 클릭 시 Renting 페이지로 이동
   const handleRent = () => {
-    // 대여하기 버튼 클릭 시 Renting 페이지로 이동
-    navigation.navigate('Renting');
+    navigation.navigate('Renting'); // 'Renting' 페이지로 이동
   };
 
+  // 신고 버튼 클릭 시 신고 처리
   const handleReport = () => {
-    // 신고 버튼 클릭 시 신고 처리 (추후 추가 기능 구현)
     alert('신고 기능은 아직 구현되지 않았습니다.');
   };
 
+  // 화면 닫기 버튼 클릭 시 MapPage로 이동
   const handleClose = () => {
-    // 화면 닫기 버튼 클릭 시 MapPage로 이동
-    navigation.navigate('MapPage');
+    navigation.navigate('MapPage'); // 'MapPage'로 이동
   };
 
   return (
@@ -33,11 +32,11 @@ const Rantal = ({ navigation }) => {
 
       {/* 전동 휠체어 위치 아이콘 (버튼으로 대체) */}
       <TouchableOpacity onPress={handleRent} style={styles.wheelchairButton}>
-        <Text style={styles.buttonText}>전동 휠체어 위치 아이콘</Text>
+        <Text style={styles.cycletext}>전동 휠체어</Text>
       </TouchableOpacity>
 
       {/* 요금 */}
-      <Text style={styles.text}>요금: {price}원</Text>
+      <Text style={styles.text}>요금 0.1kM당 50원+30분당 100원</Text>
 
       {/* 모델명 */}
       <Text style={styles.text}>모델명: {model}</Text>
@@ -84,13 +83,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wheelchairButton: {
-    backgroundColor: '#3b5998',
+    backgroundColor: 'white', // 검은색 배경
     padding: 10,
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   buttonText: {
-    color: 'white',
+    color: 'white', // 흰색 텍스트
     fontSize: 16,
   },
   text: {
@@ -98,10 +97,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   reportButton: {
-    backgroundColor: '#ff6347',
+    backgroundColor: 'black', // 검은색 배경
     padding: 10,
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   image: {
     width: 200,
@@ -110,15 +109,18 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   closeButton: {
-    backgroundColor: '#999',
+    backgroundColor: 'black', // 검은색 배경
     padding: 10,
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   rentButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: 'black', // 검은색 배경
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 20,
+  },
+  cycletext: {
+    color:'black',
   },
 });
 
