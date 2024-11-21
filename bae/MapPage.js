@@ -1,67 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const MapPage = ({ navigation }) => {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
-  // 위치 정보 가져오기
-  useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-      let loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc.coords);
-    };
-
-    getLocation();
-  }, []);
-
-  // 위치가 없다면 로딩 메시지 표시
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = `Latitude: ${location.latitude}, Longitude: ${location.longitude}`;
-  }
+  // 휠체어 아이콘 클릭 시 대여 페이지로 이동
+  const handleWheelchairIconPress = () => {
+    navigation.navigate('Rantal');
+  };
 
   return (
     <View style={styles.container}>
-      {/* 지도 표시 */}
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: location ? location.latitude : 37.7749, // 위치가 없으면 기본값
-          longitude: location ? location.longitude : -122.4194,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {/* 위치 마커 표시 */}
-        {location && (
-          <Marker
-            coordinate={{ latitude: location.latitude, longitude: location.longitude }}
-            title="현재 위치"
-            description={`위도: ${location.latitude}, 경도: ${location.longitude}`}
-          />
-        )}
-      </MapView>
-
-      {/* 위치 정보 텍스트 */}
-      <View style={styles.locationContainer}>
-        <Text style={styles.locationText}>{text}</Text>
-      </View>
-
-      {/* 버튼들 */}
+      <Text style={styles.title}>지도 페이지</Text>
+      
+      {/* 이전 화면 버튼 (링크는 나중에 추가 예정) */}
       <View style={styles.buttonContainer}>
-        <Button title="이전 화면으로" onPress={() => navigation.goBack()} />
-        <Button title="현재 위치 고정" onPress={() => alert('현재 위치 고정 기능')} />
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>이전 화면</Text>
+        </TouchableOpacity>
+        
+        {/* 현재 위치 고정 버튼 */}
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>현재 위치 고정</Text>
+        </TouchableOpacity>
       </View>
+
+      {/* 휠체어 아이콘 클릭 시 대여 페이지로 이동 */}
+      <TouchableOpacity style={styles.wheelchairIcon} onPress={handleWheelchairIconPress}>
+        <Text style={styles.iconText}>🚗</Text> {/* 휠체어 아이콘 */}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -72,25 +37,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  map: {
-    width: '100%',
-    height: '60%',
-  },
-  locationContainer: {
-    marginTop: 20,
-  },
-  locationText: {
-    fontSize: 16,
-    textAlign: 'center',
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
   },
   buttonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginBottom: 20,
   },
+  button: {
+    backgroundColor: '#008CBA',
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  wheelchairIcon: {
+    marginTop: 50,
+    padding: 20,
+  },
+  iconText: {
+    fontSize: 40,
+  }
 });
 
 export default MapPage;
