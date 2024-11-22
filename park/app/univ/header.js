@@ -8,10 +8,10 @@ const Header = () => {
       <Text style={styles.title}>ReTrack</Text>
       <View style={styles.icons}>
         <TouchableOpacity>
-          <Ionicons name="notifications-outline" size={24} color="black" />
+          <Ionicons name="notifications-outline" size={35} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.profileIcon}>
-          <Ionicons name="person-circle-outline" size={24} color="black" />
+          <Ionicons name="person-circle-outline" size={35} color="black" />
         </TouchableOpacity>
       </View>
     </View>
@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: 27,
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   icons: {
