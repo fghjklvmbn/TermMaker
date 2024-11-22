@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import Header from '../univ/Header';
+import Header from '../univ/header';
 import MainButtons from './button';
 import BottomNavBar from '../univ/navigation';
 
