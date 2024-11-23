@@ -1,96 +1,112 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import MapView from 'react-native-maps';
 
 const Renting = ({ route, navigation }) => {
-  // 예시 데이터를 state로 관리
   const [rentingTime, setRentingTime] = useState(0); // 대여 시간 (초 단위)
-  const [distance, setDistance] = useState(0); // 이동 거리 (예시, 실제 거리 계산은 추가 필요)
-
-  const [currentAmount, setCurrentAmount] = useState(0); // 금액 (예시, 실제 계산 필요)
+  const [currentAmount, setCurrentAmount] = useState(0); // 금액
 
   useEffect(() => {
-    // 대여 시간 계산 (초 단위)
+    // 대여 시간 및 금액 업데이트
     const timer = setInterval(() => {
-      setRentingTime(prevTime => prevTime + 1); // 1초마다 증가
-    }, 1000);
-
-    // 예시로 1초마다 이동 거리 및 금액을 업데이트(나중에 수정)
-    const distanceTimer = setInterval(() => {
-      setDistance(prevDistance => prevDistance + 0.1); // 예시로 0.1m씩 증가
-      setCurrentAmount(prevAmount => prevAmount + 10); // 예시로 10원씩 증가
+      setRentingTime((prev) => {
+        const newTime = prev + 1; // 1초씩 증가
+        if (newTime % 300 === 0) {
+          setCurrentAmount((prevAmount) => prevAmount + 100); // 5분마다 100원 증가
+        }
+        return newTime;
+      });
     }, 1000);
 
     // 컴포넌트 언마운트 시 타이머 종료
-    return () => {
-      clearInterval(timer);
-      clearInterval(distanceTimer);
-    };
-  }, []); // 빈 배열을 주어 컴포넌트 마운트 시 한 번만 실행되도록 설정
+    return () => clearInterval(timer);
+  }, []);
 
-  // 대여 종료 및 반납 버튼 클릭 시 화면 전환
   const handleReturn = () => {
-    // 반납 처리 로직 추가 후, 다른 페이지로 이동
-    navigation.navigate('Camera'); // 예시: 대여 완료 후 Camera로 이동
+    console.log('반납 버튼 눌림');
+    navigation.navigate('Camera'); // 반납 후 Camera 페이지로 이동
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>대여 중</Text>
-      
-      {/* 지도 컴포넌트 (네이티브 지도를 추가할 때는 여기 수정) */}
-      <View style={styles.mapContainer}>
-        <Text>지도 (이곳에 지도가 표시됩니다)</Text>
+      {/* 지도 전체 화면 */}
+      <MapView
+        style={styles.mapContainer}
+        initialRegion={{
+          latitude: 37.5665,
+          longitude: 126.9780,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+      />
+
+      {/* 하단 고정 정보 영역 */}
+      <View style={styles.bottomContainer}>
+        {/* 대여 시간 */}
+        <Text style={styles.infoText}>
+          대여 시간{'\n'}
+          <Text style={styles.infoValue}>{Math.floor(rentingTime / 60)}분 {rentingTime % 60}초</Text>
+        </Text>
+
+        {/* 이동 거리와 금액 */}
+        <View style={styles.rowContainer}>
+          <Text style={styles.infoText}>
+            이동 거리{'\n'}
+            <Text style={styles.infoValue}>0.00m</Text>
+          </Text>
+          <Text style={styles.infoText}>
+            현재 금액{'\n'}
+            <Text style={styles.infoValue}>{currentAmount}원</Text>
+          </Text>
+        </View>
+
+        {/* 반납 버튼 */}
+        <TouchableOpacity style={styles.returnButton} onPress={handleReturn}>
+          <Text style={styles.returnButtonText}>반납하기</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* 대여 시간 */}
-      <Text>대여 시간: {Math.floor(rentingTime / 60)}분 {rentingTime % 60}초</Text>
-
-      {/* 현재 간 거리 */}
-      <Text>현재 간 거리: {distance.toFixed(2)}m</Text>
-
-      {/* 현재 금액 */}
-      <Text>현재 금액: {currentAmount}원</Text>
-
-      {/* 반납하기 버튼 */}
-      <TouchableOpacity onPress={handleReturn} style={styles.returnButton}>
-        <Text style={styles.buttonText}>반납하기</Text>
-      </TouchableOpacity>
     </View>
   );
 };
 
+export default Renting;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   mapContainer: {
-    width: '100%',
-    height: 200,
-    backgroundColor: '#e0e0e0',
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 5, // 지도 비율
+  },
+  bottomContainer: {
+    flex: 2, // 하단 고정 공간 비율 확대
+    backgroundColor: '#f8f8f8',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    justifyContent: 'space-between',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  infoText: {
+    fontSize: 14, // 텍스트 크기
+    color: '#333',
+    textAlign: 'center',
+  },
+  infoValue: {
+    fontSize: 16, // 값 텍스트 크기
+    color: '#000',
   },
   returnButton: {
-    backgroundColor: 'black', // 검은색 배경
-    padding: 10,
-    borderRadius: 20, // 둥근 모서리
-    marginTop: 20,
-    width: '80%',
-    alignItems: 'center', // 텍스트 중앙 정렬
+    backgroundColor: '#000',
+    paddingVertical: 14, // 버튼 크기 확대
+    borderRadius: 10,
+    alignItems: 'center',
   },
-  buttonText: {
-    color: 'white', // 흰색 텍스트
+  returnButtonText: {
+    color: '#fff',
     fontSize: 16,
   },
 });
-
-export default Renting;

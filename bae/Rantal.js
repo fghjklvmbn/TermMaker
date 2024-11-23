@@ -1,63 +1,64 @@
-// Rantal.js
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+//Rantal.js
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const Rantal = ({ navigation }) => {
-  const [model, setModel] = useState('전동 휠체어 모델 A');
-  const [imageUri, setImageUri] = useState('https://example.com/wheelchair.jpg'); // 예시 이미지 URL
-
-  // 대여하기 버튼 클릭 시 Renting 페이지로 이동
-  const handleRent = () => {
-    navigation.navigate('Renting'); // 'Renting' 페이지로 이동
-  };
-
-  // 신고 버튼 클릭 시 신고 처리
   const handleReport = () => {
-    alert('신고 기능은 아직 구현되지 않았습니다.');
+    console.log("신고 버튼 눌림");
   };
 
-  // 화면 닫기 버튼 클릭 시 MapPage로 이동
   const handleClose = () => {
-    navigation.navigate('MapPage'); // 'MapPage'로 이동
+    console.log("화면 닫기 버튼 눌림");
+    navigation.goBack();
+  };
+
+  const handleStartRental = () => {
+    console.log("대여하기 버튼 눌림");
+    navigation.navigate("Renting");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>대여 선택 및 요금 화면</Text>
-      
-      {/* 지도 컴포넌트 (네이티브 지도를 추가할 때는 여기 수정) */}
+      {/* 지도 공간 */}
       <View style={styles.mapContainer}>
-        <Text>지도 (이곳에 지도가 표시됩니다)</Text>
+        <Text style={styles.mapPlaceholder}>지도 표시 (추후 구현)</Text>
       </View>
 
-      {/* 전동 휠체어 위치 아이콘 (버튼으로 대체) */}
-      <TouchableOpacity onPress={handleRent} style={styles.wheelchairButton}>
-        <Text style={styles.cycletext}>전동 휠체어</Text>
-      </TouchableOpacity>
+      {/* 하단 버튼 공간 */}
+      <View style={styles.bottomContainer}>
+        <View style={styles.rowContainer}>
+          {/* 가격 설명 박스 */}
+          <View style={styles.feeBox}>
+            <Text style={styles.feeText}>요금 안내</Text>
+            <Text style={styles.feeText}>1km당 50원</Text>
+            <Text style={styles.feeText}>+</Text>
+            <Text style={styles.feeText}>30분당 100원</Text>
+          </View>
 
-      {/* 요금 */}
-      <Text style={styles.text}>요금 0.1kM당 50원+30분당 100원</Text>
+          {/* 모델명과 신고 버튼 */}
+          <View style={styles.modelContainer}>
+            <Text style={styles.modelText}>모델명: ABC123</Text>
+            <TouchableOpacity style={styles.reportButton} onPress={handleReport}>
+              <Text style={styles.reportButtonText}>신고</Text>
+            </TouchableOpacity>
+          </View>
 
-      {/* 모델명 */}
-      <Text style={styles.text}>모델명: {model}</Text>
+          {/* 사진 공간 */}
+          <View style={styles.photoPlaceholder}>
+            <Text style={styles.photoText}>사진 공간</Text>
+          </View>
+        </View>
 
-      {/* 신고 버튼 */}
-      <TouchableOpacity onPress={handleReport} style={styles.reportButton}>
-        <Text style={styles.buttonText}>신고하기</Text>
-      </TouchableOpacity>
-
-      {/* 사진 출력 */}
-      <Image source={{ uri: imageUri }} style={styles.image} />
-
-      {/* 화면 닫기 버튼 */}
-      <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-        <Text style={styles.buttonText}>화면 닫기</Text>
-      </TouchableOpacity>
-
-      {/* 대여하기 버튼 */}
-      <TouchableOpacity onPress={handleRent} style={styles.rentButton}>
-        <Text style={styles.buttonText}>대여하기</Text>
-      </TouchableOpacity>
+        {/* 화면 닫기와 대여하기 버튼 */}
+        <View style={styles.actionButtons}>
+          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+            <Text style={styles.closeButtonText}>화면 닫기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.rentalButton} onPress={handleStartRental}>
+            <Text style={styles.rentalButtonText}>대여하기</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -65,62 +66,105 @@ const Rantal = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   mapContainer: {
-    width: '100%',
-    height: 200,
+    flex: 4, // 지도 공간 비율
     backgroundColor: '#e0e0e0',
-    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  wheelchairButton: {
-    backgroundColor: 'white', // 검은색 배경
-    padding: 10,
+  mapPlaceholder: {
+    color: '#888',
+    fontSize: 16,
+  },
+  bottomContainer: {
+    flex: 2, // 하단 공간 비율
+    backgroundColor: '#f8f8f8',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+  },
+  rowContainer: {
+    flexDirection: 'row', // 가로 배치
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
-    borderRadius: 20,
   },
-  buttonText: {
-    color: 'white', // 흰색 텍스트
-    fontSize: 16,
+  feeBox: {
+    borderWidth: 1,
+    borderColor: '#aaa',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 1, // 각 요소 동일 비율
+    marginHorizontal: 5,
   },
-  text: {
-    fontSize: 16,
-    marginBottom: 10,
+  feeText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modelContainer: {
+    alignItems: 'center',
+    flex: 1, // 각 요소 동일 비율
+    marginHorizontal: 5,
+  },
+  modelText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    textAlign: 'center',
   },
   reportButton: {
-    backgroundColor: 'black', // 검은색 배경
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 20,
+    backgroundColor: 'red',
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 10,
   },
-  image: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-    resizeMode: 'cover',
+  reportButtonText: {
+    color: 'white',
+    fontSize: 12,
+  },
+  photoPlaceholder: {
+    borderWidth: 1,
+    borderColor: '#aaa',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    flex: 1, // 각 요소 동일 비율
+    marginHorizontal: 5,
+  },
+  photoText: {
+    color: '#555',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   closeButton: {
-    backgroundColor: 'black', // 검은색 배경
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 20,
+    flex: 1,
+    backgroundColor: '#d9d9d9',
+    padding: 15,
+    marginRight: 10,
+    borderRadius: 10,
+    alignItems: 'center',
   },
-  rentButton: {
-    backgroundColor: 'black', // 검은색 배경
-    padding: 10,
-    borderRadius: 20,
+  closeButtonText: {
+    color: 'black',
+    fontSize: 16,
   },
-  cycletext: {
-    color:'black',
+  rentalButton: {
+    flex: 1,
+    backgroundColor: 'black',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  rentalButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

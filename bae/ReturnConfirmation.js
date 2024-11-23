@@ -10,20 +10,18 @@ const ReturnConfirmation = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>반납 확인</Text>
-
-      {/* 지도 컴포넌트 (네이티브 지도를 추가할 때는 여기 수정) */}
+      {/* 지도 컴포넌트 (현재는 placeholder로 표시) */}
       <View style={styles.mapContainer}>
-        <Text>지도 (이곳에 지도가 표시됩니다)</Text>
+        <Text style={styles.mapPlaceholder}>지도 (이곳에 지도가 표시됩니다)</Text>
       </View>
 
-      {/* 반납 완료 메시지 */}
-      <Text style={styles.text}>반납이 완료되었습니다.</Text>
-
-      {/* 확인 버튼 */}
-      <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
-        <Text style={styles.buttonText}>확인</Text>
-      </TouchableOpacity>
+      {/* 하단 반납 완료 문구 및 버튼 */}
+      <View style={styles.bottomContainer}>
+        <Text style={styles.text}>반납이 완료되었습니다.</Text>
+        <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
+          <Text style={styles.buttonText}>확인</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -31,22 +29,22 @@ const ReturnConfirmation = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
   mapContainer: {
-    width: '100%',
-    height: 200,
-    backgroundColor: '#e0e0e0',
-    marginBottom: 20,
+    flex: 1,
+    backgroundColor: '#e0e0e0', // 지도 placeholder 배경색
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  mapPlaceholder: {
+    fontSize: 18,
+    color: '#888',
+  },
+  bottomContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 18,
@@ -56,6 +54,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     padding: 10,
     borderRadius: 20,
+    width: '80%',
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
