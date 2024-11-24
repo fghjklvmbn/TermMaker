@@ -1,30 +1,43 @@
-//BluetoothGuide.js
-import React, { useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+// 예시로 Bluetooth 상태를 확인하는 함수 (라이브러리 필요)
+const checkBluetooth = async () => {
+  // 여기에 Bluetooth 상태를 확인하는 실제 코드 작성
+  // 예시로 true를 반환 (Bluetooth 활성화 상태)
+  return true;
+};
 
 const BluetoothGuide = () => {
   const navigation = useNavigation();
+  const [bluetoothEnabled, setBluetoothEnabled] = useState(false);
 
   useEffect(() => {
-    // 블루투스가 켜졌는지 체크 (현재는 임시로 true로 설정)
-    const isBluetoothEnabled = true; // 나중에 실제 블루투스 상태로 변경 필요
+    const checkBluetoothStatus = async () => {
+      const isBluetoothEnabled = await checkBluetooth();
+      setBluetoothEnabled(isBluetoothEnabled);
+      if (isBluetoothEnabled) {
+        navigation.navigate('LocationGuide');
+      } else {
+        Alert.alert('Bluetooth 비활성화', 'Bluetooth를 활성화해 주세요.');
+      }
+    };
 
-    if (isBluetoothEnabled) {
-      // 블루투스가 켜져 있으면 LocationGuide로 자동 이동
-      navigation.navigate('LocationGuide');
-    }
+    checkBluetoothStatus();
   }, [navigation]);
-
-  const handleBluetoothEnable = () => {
-    // 블루투스 켜기 로직 (현재는 알림만 처리)
-    alert('블루투스를 켰습니다');
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>블루투스가 비활성화 상태입니다.</Text>
-      <Button title="블루투스 켜기" onPress={handleBluetoothEnable} />
+      <Text>Bluetooth가 활성화되어야 합니다.</Text>
+      <Button
+        title="Bluetooth 설정"
+        onPress={() => {
+          // Bluetooth 설정으로 이동하는 로직 (예시)
+          // 이 부분은 실제 Bluetooth 설정으로 이동하는 코드로 구현해야 합니다.
+          Alert.alert('Bluetooth 설정 화면으로 이동');
+        }}
+      />
     </View>
   );
 };
@@ -34,10 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 20,
   },
 });
 

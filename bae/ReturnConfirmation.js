@@ -1,24 +1,25 @@
-// ReturnConfirmation.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const ReturnConfirmation = ({ navigation }) => {
-  // 확인 버튼 클릭 시 MapPage로 이동
-  const handleConfirm = () => {
-    navigation.navigate('MapPage'); // 지도 화면으로 이동
+const ReturnConfirmation = () => {
+  const navigation = useNavigation();
+
+  const handleReturnConfirmation = () => {
+    navigation.navigate('MapPage'); // 맵으로 돌아가기
   };
 
   return (
     <View style={styles.container}>
-      {/* 지도 컴포넌트 (현재는 placeholder로 표시) */}
-      <View style={styles.mapContainer}>
-        <Text style={styles.mapPlaceholder}>지도 (이곳에 지도가 표시됩니다)</Text>
-      </View>
+      {/* 전체 화면을 덮는 불투명 검은색 레이어 */}
+      <View style={styles.overlayBlack} />
 
-      {/* 하단 반납 완료 문구 및 버튼 */}
-      <View style={styles.bottomContainer}>
-        <Text style={styles.text}>반납이 완료되었습니다.</Text>
-        <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
+      {/* 회색 공간 위로 내용 표시 */}
+      <View style={styles.overlayBottom}>
+        <Text style={styles.title}>반납이 완료되었습니다.</Text>
+
+        {/* 확인 버튼 (TouchableOpacity로 수정) */}
+        <TouchableOpacity style={styles.button} onPress={handleReturnConfirmation}>
           <Text style={styles.buttonText}>확인</Text>
         </TouchableOpacity>
       </View>
@@ -29,37 +30,48 @@ const ReturnConfirmation = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  mapContainer: {
-    flex: 1,
-    backgroundColor: '#e0e0e0', // 지도 placeholder 배경색
     justifyContent: 'center',
     alignItems: 'center',
   },
-  mapPlaceholder: {
-    fontSize: 18,
-    color: '#888',
+  overlayBlack: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // 전체 화면을 덮는 불투명 검은색
+    zIndex: 2,
   },
-  bottomContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    alignItems: 'center',
+  overlayBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(169, 169, 169, 1)', // 불투명 회색
+    height: '30%', // 하단 30%에 회색 공간
+    zIndex: 3,
     justifyContent: 'center',
+    alignItems: 'center',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20, // 내용 간격 조정
   },
-  text: {
-    fontSize: 18,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 20,
   },
-  confirmButton: {
-    backgroundColor: 'black',
-    padding: 10,
-    borderRadius: 20,
-    width: '80%',
-    alignItems: 'center',
+  button: {
+    backgroundColor: 'white', // 흰색 배경
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'black', // 검은색 테두리
   },
   buttonText: {
-    color: 'white',
-    fontSize: 16,
+    color: 'black', // 검은색 텍스트
+    fontSize: 18,
   },
 });
 
