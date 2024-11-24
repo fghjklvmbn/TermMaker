@@ -1,25 +1,27 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaViewComponent } from 'react-native';
 import BackButton from '../../univ/BackButton';
 import SignUpForm from './SignUpForm';
 import SubmitButton from './SubmitButton';
+import Login from '../Login';
+import { SafeAreaInsetsContext, SafeAreaView } from 'react-native-safe-area-context';
 
-const SignUpScreen = ({ navigation }) => {
-  const handleBack = () => {
-    navigation.goBack();
-  };
+const SignUpScreen = ({ }) => {
+  // const handleBack = () => {
+  //   navigation.goBack(Login);
+  // };
 
   const handleSubmit = () => {
     console.log('회원가입 요청');
   };
 
   return (
-    <View style={styles.container}>
-      <BackButton style={styles.backbutton} onPress={handleBack} />
+    <SafeAreaView style={styles.container}>
+      <BackButton style={styles.backButton} onPress={() => navigation.goBack()} />
       <Text style={styles.title}>회원가입</Text>
       <SignUpForm />
       <SubmitButton onPress={handleSubmit} />
-    </View>
+    </SafeAreaView>
   );
 };
 

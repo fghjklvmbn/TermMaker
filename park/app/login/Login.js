@@ -131,8 +131,8 @@ const Login = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.footerText}>회원가입</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('FindMy')}>
-          <Text style={styles.footerText}>비밀번호 찾기</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('AccountRecoveryScreen')}>
+          <Text style={styles.footerText}>계정 찾기</Text>
         </TouchableOpacity>
       </View>
 
