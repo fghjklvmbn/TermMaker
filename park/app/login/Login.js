@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, AsyncStorage, Animated } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Animated } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../../navigation'; // AuthContext 가져오기
 
 const { width, height } = Dimensions.get('window');
 
 const Login = ({ navigation }) => {
+  const { login } = useContext(AuthContext);
   const [form, setForm] = useState({
     username: '',
     password: '',
   });
-
   const [isAutoLogin, setIsAutoLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);  // 로딩 상태
   const [loginError, setLoginError] = useState('');  // 로그인 오류 상태 추가
-  const [logoOpacity] = useState(new Animated.Value(1));  // 로고 애니메이션을 위한 값
 
   // 페이지가 렌더링될 때 자동 로그인 상태 확인
   useEffect(() => {
     const checkAutoLogin = async () => {
       const savedUsername = await AsyncStorage.getItem('username');
       const savedPassword = await AsyncStorage.getItem('password');
-      
+
       if (savedUsername && savedPassword) {
         setForm({ username: savedUsername, password: savedPassword });
         setIsAutoLogin(true);
@@ -35,49 +37,31 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     setIsLoading(true);
-    setLoginError(''); // 이전의 오류 메시지 초기화
-    Animated.timing(logoOpacity, {
-      toValue: 0, // 로고 투명도 점점 줄이기
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  
+    setLoginError(''); // 이전 오류 메시지 초기화
+
     try {
       // 서버로 로그인 API 호출
-      const response = await axios.post('http://dsapoi881.duckdns.org/api/login', {
+      const response = await axios.post('http://127.0.0.1:3000/api/auth/login', {
         username: form.username,
         password: form.password,
       });
-  
+
       // 서버 응답에서 토큰 가져오기
       const { token } = response.data;
-  
+
       if (token) {
-        // 로그인 성공
-        await AsyncStorage.setItem('token', token); // 토큰을 AsyncStorage에 저장
-        setIsLoading(false); // 로딩 종료
-        navigation.navigate('Home'); // 로그인 후 홈 화면으로 이동
+        login(token);
       } else {
-        // 로그인 실패 (토큰이 없으면 실패 처리)
-        setLoginError('로그인 실패. 아이디 또는 비밀번호를 확인해주세요.');
-        setIsLoading(false); // 로딩 종료
-        Animated.timing(logoOpacity, {
-          toValue: 1, // 로고 투명도를 다시 원래대로
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
+        // 로그인 실패 처리
+        setError('아이디 또는 비밀번호를 확인해주세요.');
       }
     } catch (error) {
-      // 에러 발생 시 처리
+      // 에러 처리
       setLoginError(
         error.response?.data?.message || '로그인 중 오류가 발생했습니다. 다시 시도해주세요.'
       );
+    } finally {
       setIsLoading(false);
-      Animated.timing(logoOpacity, {
-        toValue: 1, // 로고 투명도를 다시 원래대로
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
     }
   };
 
@@ -89,7 +73,7 @@ const Login = ({ navigation }) => {
     <View style={styles.container}>
       {/* ReTrack 로고 */}
       <View style={styles.logoContainer}>
-        <Animated.Text style={[styles.logoText, { opacity: logoOpacity }]}>ReTrack</Animated.Text>
+        <Text style={[styles.logoText]}>ReTrack</Text>
       </View>
 
       {/* 로그인 폼 */}
@@ -239,20 +223,18 @@ const styles = StyleSheet.create({
     top: height / 2,
     left: width / 2 - 75,
     backgroundColor: '#000',
-    paddingVertical: 20,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-    opacity: 0.8,
+    padding: 20,
+    borderRadius: 8,
+    zIndex: 100,
   },
   loadingText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
-    fontWeight: 'bold',
   },
   errorText: {
     color: 'red',
-    fontSize: 14,
     marginTop: 10,
+    fontSize: 14,
   },
 });
 
