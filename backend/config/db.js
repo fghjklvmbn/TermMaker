@@ -9,17 +9,20 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  connectTimeout: 20000 // 데이터베이스 연결지연때문에 20초 설정
 });
 
 // DB 연결 테스트
 const testDBConnection = async () => {
-    try {
+   try {
       const [rows] = await pool.query('SELECT 1 + 1 AS solution');
-      console.log('Database connected successfully:', rows[0].solution); // 출력: 2
-    } catch (error) {
-      console.error('Database connection failed:', error);
-    }
+     console.log('Database connected successfully:', rows[0].solution); // 출력: 2
+   } catch (error) {
+     console.error('Database connection failed:', error);
+   }
 };
 
-// 서버 시작 시 연결 테스트 실행
+//서버 시작 시 연결 테스트 실행
 testDBConnection();
+
+//module.exports = pool;

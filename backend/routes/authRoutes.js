@@ -1,8 +1,38 @@
 const express = require('express');
-const { signup, login } = require('../controllers/authController');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const db = require('../config/db');
+const { jwtSecret, jwtExpiresIn } = require('../config/config');
+
 const router = express.Router();
 
-router.post('/signup', signup);
-router.post('/login', login);
+// 로그인 엔드포인트
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // 사용자 조회
+    const [userRows] = await db.execute('SELECT * FROM user WHERE username = ?', [username]);
+    if (userRows.length === 0) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    const user = userRows[0];
+
+    // 비밀번호 확인
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    // 토큰 생성
+    const token = jwt.sign({ id: user.id, username: user.username }, jwtSecret, { expiresIn: jwtExpiresIn });
+
+    res.status(200).json({ message: 'Login successful', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred during login' });
+  }
+});
 
 module.exports = router;
