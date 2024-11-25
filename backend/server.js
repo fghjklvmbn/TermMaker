@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -11,6 +12,7 @@ const commentRoutes = require('./routes/commentRoutes');
 
 dotenv.config();
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 app.use('/api/users', userRoutes);
@@ -30,6 +32,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/community', communityRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/wheelchair', wheelchairRoutes);
+app.use('/api/user', userRoutes)
 
 
 // 인증요청 라우터 등록

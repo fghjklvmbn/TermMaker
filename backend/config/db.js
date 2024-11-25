@@ -25,4 +25,4 @@ const testDBConnection = async () => {
 //서버 시작 시 연결 테스트 실행
 testDBConnection();
 
-//module.exports = pool;
+module.exports = pool;
