@@ -7,6 +7,7 @@ import Login from './app/login/Login'; // 로그인 화면
 import Register from './app/login/register/SignUpScreen'; // 회원가입 화면
 import MainScreen from './app/mainScreen/MainScreen'; // 메인 화면
 import AccountRecoveryScreen from './app/login/FindAccount/AccountRecoveryScreen'; // 계정찾기 화면
+//import MainScreen from './app/mainScreen/MainScreen';
 
 const Stack = createStackNavigator();
 
@@ -14,10 +15,10 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Login" component={MainScreen} />
         <Stack.Screen name="AccountRecoveryScreen" component={AccountRecoveryScreen} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="MainScreen" component={MainScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

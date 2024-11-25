@@ -35,42 +35,46 @@ const Login = ({ navigation }) => {
 
   const handleLogin = async () => {
     setIsLoading(true);
-    setLoginError('');  // 이전의 오류 메시지 초기화
+    setLoginError(''); // 이전의 오류 메시지 초기화
     Animated.timing(logoOpacity, {
-      toValue: 0,  // 로고 투명도 점점 줄이기
+      toValue: 0, // 로고 투명도 점점 줄이기
       duration: 500,
       useNativeDriver: true,
     }).start();
-
-    // 로그인 시도 (예: 서버로 로그인 API 호출)
+  
     try {
-      console.log('로그인 시도:', form.username, form.password);
-      // 여기서는 가상의 로그인 로직을 사용합니다.
-      // 실제로는 서버로 인증 요청을 보내고, 응답을 기다려야 합니다.
-      const loginSuccess = Math.random() > 0.5; // 예시로 성공/실패를 랜덤으로 처리
-
-      if (loginSuccess) {
+      // 서버로 로그인 API 호출
+      const response = await axios.post('http://dsapoi881.duckdns.org/api/login', {
+        username: form.username,
+        password: form.password,
+      });
+  
+      // 서버 응답에서 토큰 가져오기
+      const { token } = response.data;
+  
+      if (token) {
         // 로그인 성공
-        await AsyncStorage.setItem('username', form.username);
-        await AsyncStorage.setItem('password', form.password);
-        setIsLoading(false);  // 로딩 종료
+        await AsyncStorage.setItem('token', token); // 토큰을 AsyncStorage에 저장
+        setIsLoading(false); // 로딩 종료
         navigation.navigate('Home'); // 로그인 후 홈 화면으로 이동
       } else {
-        // 로그인 실패
+        // 로그인 실패 (토큰이 없으면 실패 처리)
         setLoginError('로그인 실패. 아이디 또는 비밀번호를 확인해주세요.');
-        setIsLoading(false);  // 로딩 종료
+        setIsLoading(false); // 로딩 종료
         Animated.timing(logoOpacity, {
-          toValue: 1,  // 로고 투명도를 다시 원래대로
+          toValue: 1, // 로고 투명도를 다시 원래대로
           duration: 500,
           useNativeDriver: true,
         }).start();
       }
     } catch (error) {
       // 에러 발생 시 처리
-      setLoginError('로그인 중 오류가 발생했습니다. 다시 시도해주세요.');
+      setLoginError(
+        error.response?.data?.message || '로그인 중 오류가 발생했습니다. 다시 시도해주세요.'
+      );
       setIsLoading(false);
       Animated.timing(logoOpacity, {
-        toValue: 1,  // 로고 투명도를 다시 원래대로
+        toValue: 1, // 로고 투명도를 다시 원래대로
         duration: 500,
         useNativeDriver: true,
       }).start();
