@@ -9,7 +9,7 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  connectTimeout: 20000 // 데이터베이스 연결지연때문에 20초 설정
+  connectTimeout: 60000 // 데이터베이스 연결지연때문에 20초 설정
 });
 
 // DB 연결 테스트
