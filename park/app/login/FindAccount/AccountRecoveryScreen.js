@@ -15,10 +15,16 @@ const AccountRecoveryScreen = ({ navigation }) => {
 
       {/* 버튼들 */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('FindMy'). find_id=true}}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('FindMy', { find_id: true })}
+        >
           <Text style={styles.buttonText}>아이디 찾기</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('FindMy'). find_pw=true}}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('FindMy', { find_id: false })}
+        >
           <Text style={styles.buttonText}>비밀번호 찾기</Text>
         </TouchableOpacity>
       </View>
@@ -35,6 +41,8 @@ const styles = StyleSheet.create({
   backButton: {
     marginTop: 10,
     marginLeft: 30,
+    width: 30,
+    height: 30,
   },
   title: {
     fontSize: 24,

@@ -41,16 +41,22 @@ const Login = ({ navigation }) => {
 
     try {
       // 서버로 로그인 API 호출
-      const response = await axios.post('http://127.0.0.1:3000/api/auth/login', {
+      const response = await axios.post('http://127.0.0.1:3000/api/user/login', {
         username: form.username,
         password: form.password,
       });
 
       // 서버 응답에서 토큰 가져오기
-      const { token } = response.data;
+      const { accessToken, refreshToken } = response.data;
 
-      if (token) {
-        login(token);
+      if (accessToken && refreshToken) {
+        // 엑세스 토큰과 리프레시 토큰을 AsyncStorage에 저장
+        await AsyncStorage.setItem('accessToken', accessToken);
+        await AsyncStorage.setItem('refreshToken', refreshToken);
+  
+        // 토큰을 사용하여 로그인 상태를 관리
+        login(accessToken, refreshToken); // 로그인 처리 함수 호출
+  
       } else {
         // 로그인 실패 처리
         setError('아이디 또는 비밀번호를 확인해주세요.');
@@ -58,7 +64,7 @@ const Login = ({ navigation }) => {
     } catch (error) {
       // 에러 처리
       setLoginError(
-        error.response?.data?.message || '로그인 중 오류가 발생했습니다. 다시 시도해주세요.'
+        '아이디 또는 비밀번호를 확인해주세요'
       );
     } finally {
       setIsLoading(false);

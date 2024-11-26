@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-const SubmitButton = ({ onPress }) => {
+const SubmitButton = ({ handleSubmit }) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
       <Text style={styles.text}>회원가입</Text>
     </TouchableOpacity>
   );
