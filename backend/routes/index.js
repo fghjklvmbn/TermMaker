@@ -8,7 +8,7 @@ const feedbackController = require('../controllers/feedbackController');
 const router = express.Router();
 
 // 사용자 관련
-router.post('/register', userController.registerUser);
+router.post('/register', userController.register);
 router.get('/profile', authenticateToken, userController.getUserProfile);
 
 // 결제 관련

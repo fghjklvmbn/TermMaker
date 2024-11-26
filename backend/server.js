@@ -1,7 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
 const protectedRoutes = require('./routes/protectedRoutes');
 const userRoutes = require('./routes/userRoutes');
 const communityRoutes = require('./routes/communityRoutes');
@@ -28,13 +27,12 @@ app.listen(PORT, () => {
 
 
 // 각 기능 라우터 등록
-app.use('/api/payment', paymentRoutes);
-app.use('/api/community', communityRoutes);
-app.use('/api/comment', commentRoutes);
-app.use('/api/wheelchair', wheelchairRoutes);
-app.use('/api/user', userRoutes)
+app.use('/api/payment', paymentRoutes); // 결제수단 관련 요청
+app.use('/api/community', communityRoutes); // 커뮤니티 관련 요청
+app.use('/api/comment', commentRoutes); // 댓글 관련 요청
+app.use('/api/wheelchair', wheelchairRoutes); // 휠체어 관련 요청
+app.use('/api/user', userRoutes)  // 로그인/회원가입 등
 
 
 // 인증요청 라우터 등록
-app.use('/api/auth', authRoutes); // 로그인/회원가입 등
 app.use('/api/protected', protectedRoutes); // 인증된 요청
