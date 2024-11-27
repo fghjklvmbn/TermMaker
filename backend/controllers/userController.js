@@ -46,17 +46,17 @@ exports.login = async (req, res) => {
     const accessToken = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET,
-      { expiresIn: '15m' } // 15분 유효
+      { expiresIn: '15m' }
     );
 
     // 리프레시 토큰 생성
     const refreshToken = jwt.sign(
       { id: user.id },
       process.env.JWT_SECRET_REFRESH,
-      { expiresIn: '7d' } // 7일 유효
+      { expiresIn: '7d' }
     );
 
-    // 리프레시 토큰을 데이터베이스에 저장 (User 모델에 메서드 추가 가능)
+    // 리프레시 토큰 저장
     await User.updateRefreshToken(user.id, refreshToken);
 
     // 응답 반환
@@ -69,6 +69,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: '로그인 실패', error: err.message });
   }
 };
+
 
 // 리프레시 토큰을 사용한 액세스 토큰 갱신
 exports.refreshToken = async (req, res) => {
@@ -163,3 +164,4 @@ exports.findPassword = async (req, res) => {
     res.status(500).json({ message: '비밀번호 찾기 실패', error: err.message });
   }
 };
+
