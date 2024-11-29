@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const PaymentMethodsPage01 = () => {
+const PaymentMethodsPage01 = ({ navigation }) => {
   const handlePress = async (action) => {
     try {
-      // Express.js 서버로 요청 보내기
       const response = await fetch('http://localhost:8081', {
         method: 'POST',
         headers: {
@@ -24,67 +24,92 @@ const PaymentMethodsPage01 = () => {
     }
   };
 
+  const handleBackPress = () => {
+    if (navigation) {
+      navigation.goBack();
+    } else {
+      Alert.alert('Back', '이전 화면으로 이동합니다.');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>결제수단</Text>
-      {/* 결제수단 리스트 */}
-      {['삼성(2847)'].map((item) => (
-        <TouchableOpacity
-          key={item}
-          style={styles.button}
-          onPress={() => handlePress(item)}
-        >
-          <Text style={styles.buttonText}>{item}</Text>
+      {/* 헤더 영역 */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-      ))}
-      {/* 결제수단 추가 버튼 */}
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => handlePress('결제수단 추가')}
-      >
-        <Text style={styles.addButtonText}>+</Text>
-      </TouchableOpacity>
+        <Text style={styles.title}>결제수단</Text>
+      </View>
+
+      {/* 본문 영역 */}
+      <View style={styles.content}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handlePress('삼성(2847)')}
+        >
+          <Text style={styles.buttonText}>삼성(2847)</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => handlePress('결제수단 추가')}
+        >
+          <Text style={styles.addButtonText}>+</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
-    },
-    title: {
-      fontSize: 33,
-      fontWeight: 'bold',
-      marginBottom: 90,
-    },
-    button: {
-      width: '80%',
-      backgroundColor: '#f0f0f0',
-      borderRadius: 10,
-      paddingVertical: 30,
-      marginVertical: 10,
-      alignItems: 'center',
-    },
-    buttonText: {
-      fontSize: 16,
-      color: '#000',
-    },
-    addButton: {
-      width: '80%',
-      backgroundColor: '#D9D9D9',
-      borderRadius: 10,
-      paddingVertical: 50,
-      marginTop: 20,
-      alignItems: 'center',
-    },
-    addButtonText: {
-      fontSize: 16,
-      color: '#000',
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+  },
+  header: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 70, // 이전 버튼과 제목을 상단에서 50 더 아래로 내림 (기존 20에서 증가)
+    marginBottom: 30, // 결제수단과 본문 버튼들 간 거리
+  },
+  backButton: {
+    position: 'absolute',
+    left: 20, // 왼쪽 여백
+    top: -10, // 이전 버튼의 세로 위치를 조금 더 조정
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  content: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  button: {
+    width: '80%',
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    paddingVertical: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  addButton: {
+    width: '80%',
+    backgroundColor: '#D9D9D9',
+    borderRadius: 10,
+    paddingVertical: 40,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+});
+
 export default PaymentMethodsPage01;
