@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
-
+// 회원탈퇴 확인 페이지
 const WithdrawalErrorPage = ({ navigation }) => {
     const [password, setPassword] = useState('');
 
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: '100%',
-        marginBottom: 10, // 버튼과 오류 메시지 간격
+        marginBottom: 10,
     },
     label: {
         fontSize: 16,
@@ -102,21 +102,21 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#A03737',
         textAlign: 'center',
-        marginBottom: 15, // 버튼과 간격
+        marginBottom: 15,
     },
     buttonContainer: {
-        flexDirection: 'row', // 버튼들을 가로로 배치
+        flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%',
         marginTop: 15,
     },
     button: {
-        flex: 1, // 버튼 크기를 균등하게
+        flex: 1,
         backgroundColor: '#D9D9D9',
-        paddingVertical: 15,
+        paddingVertical: 18,
         borderRadius: 10,
         alignItems: 'center',
-        marginHorizontal: 5, // 버튼 간격
+        marginHorizontal: 20,
     },
     cancelButton: {
         backgroundColor: '#ccc',
