@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-
+// 회원탈퇴 성공 페이지
 const WithdrawalCompletePage = ({ navigation }) => {
     const handleConfirm = () => {
         navigation.goBack(); // 이전 페이지로 돌아가기
@@ -24,35 +24,36 @@ const WithdrawalCompletePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        padding: 20,
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 20,
     },
     title: {
-        fontSize: 33, // 기존보다 크게
-        fontWeight: 'bold',
-        marginBottom: 105,
-      },
+      fontSize: 33,
+      fontWeight: 'bold',
+      marginBottom: 105,
+    },
     subtitle: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#3737A0',
-        marginBottom: 50,
-        textAlign: 'center',
+      fontSize: 25,
+      fontWeight: 'bold',
+      color: '#3737A0',
+      marginBottom: 50,
+      textAlign: 'center',
     },
     button: {
-        backgroundColor: '#D9D9D9',
-        paddingVertical: 15,
-        borderRadius: 5,
-        alignItems: 'center',
-        width: '60%',
+      backgroundColor: '#D9D9D9',
+      width: '80%',
+      paddingVertical: 18,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 20,
     },
     buttonText: {
-        color: '#000',
-        fontSize: 16,
+      color: '#000',
+      fontSize: 16,
     },
-});
+  });  
 
 export default WithdrawalCompletePage;
