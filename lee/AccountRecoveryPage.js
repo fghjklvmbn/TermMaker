@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // 아이콘 사용을 위해 필요
-
+// 계정찾기 페이지
 const AccountRecoveryPage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -43,29 +43,29 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   backButton: {
-    alignSelf: 'flex-start', // 왼쪽 정렬
-    marginTop: 40, // 상단 여백
-    marginLeft: 20, // 2칸 오른쪽으로 이동
+    alignSelf: 'flex-start', 
+    marginTop: 40,
+    marginLeft: 20,
   },
   title: {
-    fontSize: 30, // 제목 크기
+    fontSize: 30,
     fontWeight: 'bold',
-    textAlign: 'center', // 가운데 정렬
+    textAlign: 'center', 
     marginTop: 80,
   },
   buttonContainer: {
     flex: 1,
-    justifyContent: 'center', // 버튼들을 가운데로 배치
-    alignItems: 'center', // 가로로 가운데 정렬
-    marginTop: 2, // 계정 찾기 텍스트와 버튼들 간격
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 2,
   },
   button: {
     backgroundColor: '#D9D9D9',
-    width: '80%', // 버튼 너비
+    width: '80%',
     paddingVertical: 15,
-    borderRadius: 30, // 둥근 버튼 스타일
+    borderRadius: 10,
     alignItems: 'center',
-    marginTop: 30, // 버튼 간격
+    marginTop: 10,
   },
   buttonText: {
     color: '#000000',
