@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     title: {
-        fontSize: 33, // 기존보다 크게
+        fontSize: 33, 
         fontWeight: 'bold',
         marginBottom: 80,
     },
     subtitle: {
-        fontSize: 16, // 텍스트 크기
-        color: '#000',
+        fontSize: 16, 
+        color: '#A03737',
         marginBottom: 20,
         textAlign: 'center',
     },
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     errorText: {
-        fontSize: 14, // 오류 메시지 폰트 크기
+        fontSize: 14,
         color: '#000',
         textAlign: 'center',
         marginBottom: 20,
