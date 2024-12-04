@@ -57,6 +57,13 @@ import FindPasswordResultPage from './app/FindPasswordResultPage';
 import AccountNotFoundPage from './app/AccountNotFoundPage';
 import AutoLoginPage from './app/AutoLoginPage';
 import LocationGuide from './app/LocationGuide';
+import RentalStart from './app/RentalStart';
+import Rental from './app/Rental';
+import ReturnConfirmation from './app/ReturnConfirmation';
+import Renting from './app/Renting';
+import Camera from './app/Camera';
+import BoardScreen from './app/BoardScreen';
+import BoardWrite from './app/BoardWrite';
 
 const Stack = createStackNavigator();
 
@@ -85,6 +92,13 @@ export default function App() {
         <Stack.Screen name="AccountNotFoundPage" component={AccountNotFoundPage} />
         <Stack.Screen name="AutoLoginPage" component={AutoLoginPage} />
         <Stack.Screen name="LocationGuide" component={LocationGuide} />
+        <Stack.Screen name="RentalStart" component={RentalStart} />
+        <Stack.Screen name="Rental" component={Rental} />
+        <Stack.Screen name="ReturnConfirmation" component={ReturnConfirmation} />
+        <Stack.Screen name="Renting" component={Renting} />
+        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="BoardScreen" component={BoardScreen} />
+        <Stack.Screen name="BoardWrite" component={BoardWrite} />
       </Stack.Navigator>
     </NavigationContainer>
   );
