@@ -9,9 +9,9 @@ const MainScreen = () => {
 
   const buttons = [
     { label: '홈', onPress: () => console.log('홈') },
-    { label: '대여/반납', onPress: () => console.log('대여/반납') },
-    { label: '커뮤니티', onPress: () => console.log('커뮤니티') },
-    { label: '설정', onPress: () => navigation.navigate('Mypage') }, // "설정" 버튼 클릭 시 'App' 페이지로 이동
+    { label: '대여/반납', onPress: () => navigation.navigate('RentalStart') }, // 대여/반납 페이지로 이동
+    { label: '커뮤니티', onPress: () => navigation.navigate('BoardScreen') }, // 커뮤니티 페이지로 이동
+    { label: '설정', onPress: () => navigation.navigate('Mypage') },
   ];
 
   return (
@@ -110,3 +110,4 @@ const styles = StyleSheet.create({
 });
 
 export default MainScreen;
+
