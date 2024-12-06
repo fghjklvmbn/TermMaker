@@ -28,7 +28,7 @@ jobs:
           SERVER_IP: ${{ secrets.SERVER_IP }}
         run: |
           # 서버에 SSH로 접속
-          ssh -tt $SERVER_USER@$SERVER_IP << EOF
+          ssh -tt -y $SERVER_USER@$SERVER_IP << EOF
             # 작업 디렉토리로 이동
             cd ~/term_backend
 
