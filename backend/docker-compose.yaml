@@ -8,11 +8,7 @@ services:
     ports:
       - "3123:3000"
     environment:
-<<<<<<< HEAD
       DB_HOST: dsapoi881.duckdns.org
-=======
-      DB_HOST: dsapoi881.duckdns.orgexe
->>>>>>> 9ccec36 (백엔드 수정)
       DB_USER: term_user
       DB_PASSWORD: '00000000'
       DB_DATABASE: term
