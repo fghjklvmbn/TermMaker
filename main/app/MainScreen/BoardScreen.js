@@ -8,6 +8,8 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
+import BottomNavBar from '../univ/navigation';
+import Header from '../univ/header';
 
 const { width } = Dimensions.get('window');
 
@@ -42,9 +44,9 @@ const BoardScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header/>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.logo}>ReTrack</Text>
         <Text style={styles.boardTitle}>자유 게시판</Text>
         <TouchableOpacity
           style={styles.writeButton}
@@ -65,23 +67,7 @@ const BoardScreen = ({ navigation }) => {
       />
 
       {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        {[
-          { title: '홈', route: 'MainScreen' },
-          { title: '대여/반납', route: 'RentalScreen' },
-          { title: '커뮤니티', route: 'CommunityScreen' },
-          { title: '설정', route: 'SettingsScreen' },
-        ].map((nav, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.navButton}
-            onPress={() => navigation.navigate(nav.route)}
-            accessibilityLabel={`${nav.title} 화면으로 이동`}
-          >
-            <Text style={styles.navButtonText}>{nav.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <BottomNavBar/>
     </SafeAreaView>
   );
 };
@@ -92,9 +78,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
     },
     header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: 'row', // 가로 방향 정렬
+      alignItems: 'center', // 수직 중앙 정렬
+      justifyContent: 'space-between', // 양 끝 정렬
       padding: 15,
       backgroundColor: '#FFF',
       borderBottomWidth: 1,

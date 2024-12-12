@@ -1,7 +1,12 @@
 {
   "expo": {
-    "name": "retrack",
-    "slug": "retrack",
-    "version": "1.0.0"
+    "name": "termproject",
+    "slug": "termproject",
+    "version": "1.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "60620e93-e358-4321-b580-c7c499e77b36"
+      }
+    }
   }
 }
