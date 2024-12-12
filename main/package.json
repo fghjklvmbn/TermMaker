@@ -30,8 +30,7 @@
     "react-native-reanimated": "latest",
     "react-native-safe-area-context": "latest",
     "react-native-vision-camera": "^4.6.3",
-    "react-native-web": "latest",
-    "undefined": "expo-camera/legacy"
+    "react-native-web": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2"
