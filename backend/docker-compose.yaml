@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: express-backend
+    restart: always
+    ports:
+      - "3123:3000"
+    environment:
+      DB_HOST: dsapoi881.duckdns.org
+      DB_USER: term_user
+      DB_PASSWORD: '00000000'
+      DB_DATABASE: term
+    networks:
+      - app-network
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
