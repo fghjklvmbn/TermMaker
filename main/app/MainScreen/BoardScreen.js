@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,44 +7,93 @@ import {
   FlatList,
   Dimensions,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
+import axios from 'axios';
 import BottomNavBar from '../univ/navigation';
 import Header from '../univ/header';
 
 const { width } = Dimensions.get('window');
 
-// Sample data for posts
-const data = [
-  { id: '1', title: '자유게시판 첫 번째 글', user: '김철수님', views: 134, comments: 23, date: '2024.11.19' },
-  { id: '2', title: 'React Native 사용법', user: '박영희님', views: 89, comments: 12, date: '2024.11.18' },
-  { id: '3', title: '게시글 작성 예시', user: '이민호님', views: 56, comments: 8, date: '2024.11.17' },
-  { id: '4', title: '오늘 날씨 정말 좋네요!', user: '김은정님', views: 152, comments: 27, date: '2024.11.16' },
-  { id: '5', title: '리액트 네이티브 관련 질문', user: '최지우님', views: 240, comments: 45, date: '2024.11.15' },
-  { id: '6', title: '개발자 스터디 모집', user: '정석환님', views: 310, comments: 67, date: '2024.11.14' },
-];
-
 const BoardScreen = ({ navigation }) => {
-  const renderItem = ({ item }) => (
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // 데이터 불러오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        // GET 요청으로 데이터 가져오기
+        const response = await axios.get('http://dsapoi881.duckdns.org:3123/api/board');
+        setPosts(response.data); // 받아온 데이터를 상태에 저장
+      } catch (error) {
+        console.error('게시글을 불러오는 중 오류 발생:', error);
+      } finally {
+        setLoading(false); // 로딩 상태 종료
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  const getUserName = async (userId) => {
+    if (usernames[userId]) return usernames[userId]; // 이미 캐싱된 경우 반환
+
+    try {
+      const response = await axios.get(`http://dsapoi881.duckdns.org:3123/api/user/${userId}`);
+      const username = response.data.username;
+
+      // 캐싱
+      setUsernames((prev) => ({ ...prev, [userId]: username }));
+      return username;
+    } catch (error) {
+      console.error(`작성자 이름을 불러오는 중 오류 발생 (ID: ${userId}):`, error);
+      return '알 수 없음';
+    }
+  };
+
+  const renderItem = ({ item }) => {
+    const [username, setUsername] = useState("");
+
+    useEffect(() => {
+      const fetchUsername = async () => {
+        const name = await getUserName(item.author_id); // 작성자 ID로 이름 가져오기
+        setUsername(name);
+      };
+
+      fetchUsername();
+    }, [item.author_id]);
+
+    return (
     <TouchableOpacity
       style={styles.post}
-      onPress={() => navigation.navigate('BoardDetail', { postId: item.id })} // 추가
+      onPress={() => navigation.navigate('BoardDetail', { postId: item.id })}
       accessibilityLabel={`${item.title} 게시글 열기`}
     >
       <View style={styles.postHeader}>
         <Text style={styles.postTitle}>{item.title}</Text>
-        <Text style={styles.postUser}>{item.user}</Text>
+        <Text style={styles.postUser}>작성자: {{username}}</Text>
       </View>
       <View style={styles.postFooter}>
-        <Text style={styles.iconText}>💬 {item.comments}</Text>
+        <Text style={styles.iconText}>💬 {item.comment_counts}</Text>
         <Text style={styles.iconText}>👁️ {item.views}</Text>
-        <Text style={styles.postDate}>{item.date}</Text>
+        <Text style={styles.postDate}>{new Date(item.created_at).toLocaleDateString()}</Text>
       </View>
     </TouchableOpacity>
-  );
+    );
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" style={{ marginTop: 20 }} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header/>
+      <Header />
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.boardTitle}>자유 게시판</Text>
@@ -59,114 +108,89 @@ const BoardScreen = ({ navigation }) => {
 
       {/* Posts List */}
       <FlatList
-        data={data}
+        data={posts}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()} // 숫자로 된 id를 문자열로 변환
         contentContainerStyle={styles.postsContainer}
         initialNumToRender={5} // 성능 최적화
       />
 
       {/* Bottom Navigation */}
-      <BottomNavBar/>
+      <BottomNavBar />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-    },
-    header: {
-      flexDirection: 'row', // 가로 방향 정렬
-      alignItems: 'center', // 수직 중앙 정렬
-      justifyContent: 'space-between', // 양 끝 정렬
-      padding: 15,
-      backgroundColor: '#FFF',
-      borderBottomWidth: 1,
-      borderColor: '#CCC',
-    },
-    logo: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    boardTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    writeButton: {
-      backgroundColor: '#f0f0f0',
-      borderRadius: 10,
-      paddingVertical: 8,
-      paddingHorizontal: 15,
-    },
-    writeButtonText: {
-      fontSize: 16,
-      color: '#000',
-      fontWeight: 'bold',
-    },
-    postsContainer: {
-      paddingHorizontal: 15,
-      marginBottom: 60, // 하단 네비게이션과의 거리 확보
-    },
-    post: {
-      backgroundColor: '#FFF',
-      borderRadius: 8,
-      padding: 15,
-      marginBottom: 10,
-      shadowColor: '#000',
-      shadowOpacity: 0.1,
-      shadowRadius: 3,
-      elevation: 2,
-    },
-    postHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: 10,
-    },
-    postTitle: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-    postUser: {
-      fontSize: 14,
-      color: '#555',
-    },
-    postFooter: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    iconText: {
-      fontSize: 14,
-      color: '#555',
-    },
-    postDate: {
-      fontSize: 12,
-      color: '#888',
-    },
-    bottomNav: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      borderTopWidth: 1,
-      borderColor: '#ccc',
-      paddingVertical: 10,
-      backgroundColor: '#D9D9D9',
-      position: 'absolute', // 화면의 고정 위치를 설정
-      bottom: 0, // 화면 맨 아래에 배치
-      width: '100%', // 전체 화면 너비를 차지
-    },
-    navButton: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: width * 0.2,
-      paddingVertical: 10,
-    },
-    navButtonText: {
-      fontSize: 16,
-      color: '#000',
-    },
-  });
-  
+  // 이전 스타일 정의를 유지합니다.
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+    backgroundColor: '#FFF',
+    borderBottomWidth: 1,
+    borderColor: '#CCC',
+  },
+  boardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  writeButton: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+  },
+  writeButtonText: {
+    fontSize: 16,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  postsContainer: {
+    paddingHorizontal: 15,
+    marginBottom: 60,
+  },
+  post: {
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  postHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  postTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  postUser: {
+    fontSize: 14,
+    color: '#555',
+  },
+  postFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  iconText: {
+    fontSize: 14,
+    color: '#555',
+  },
+  postDate: {
+    fontSize: 12,
+    color: '#888',
+  },
+});
 
 export default BoardScreen;
