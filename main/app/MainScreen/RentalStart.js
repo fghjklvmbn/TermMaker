@@ -4,6 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Rental from './Rental';
 import ReturnConfirmation from './ReturnConfirmation';
+import axios from 'axios';
 
 const RentalStart = ({ navigation }) => {
   const [location, setLocation] = useState(null); // 위치 상태
@@ -41,9 +42,14 @@ const RentalStart = ({ navigation }) => {
     );
   }
 
-  const wheelchairLocation = {
-    latitude: location.coords.latitude + 0.001,
-    longitude: location.coords.longitude + 0.001,
+  const wheelchairLocation = async() => {
+
+    const response = await axios.post("http://localhost:3000/api/wheelchair/location");
+
+    // axios 추가
+    latitude = response.latitude;
+    longitude = response.longitude;
+  
   };
 
   // 현재 위치 고정 기능

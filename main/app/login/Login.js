@@ -34,7 +34,9 @@ const Login = ({ navigation }) => {
     setIsLoading(true);
     setLoginError('');
     try {
-      const response = await axios.post('http://dsapoi881.duckdns.org:3123/api/user/login', {
+      // 백엔드 로컬 <-> 서버
+      const response = await axios.post('http://localhost:3000/api/user/login', {
+      // const response = await axios.post('http://dsapoi881.duckdns.org:3123/api/user/login', {
         username: form.username,
         password: form.password,
       });
@@ -52,7 +54,8 @@ const Login = ({ navigation }) => {
         setLoginError('아이디 또는 비밀번호를 확인해주세요.');
       }
     } catch (error) {
-      setLoginError('아이디 또는 비밀번호를 확인해주세요.');
+      console.log(error);
+      setLoginError('에러발생');
     } finally {
       setIsLoading(false);
     }

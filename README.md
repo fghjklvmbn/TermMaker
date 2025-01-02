@@ -2,6 +2,7 @@
 텀메이커 프로젝트 : 고령자용 전동휠체어 초단기 대여반납 시스템 
 react-native(expo-cli, bare workflow) + express.js
 
+테스트 끝나고 바로 서버에 백엔드 올릴 예정
 
 추상적인 폴더 구조 :
 screen -> 
@@ -82,4 +83,3 @@ root/
 |   | - common/
 |   |   | - AlertModal.js
 |   |   | - WarningModal.js
-
