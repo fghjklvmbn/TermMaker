@@ -3,10 +3,12 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../AuthProvider'; // AuthContext 가져오기
+import Constants from 'expo-constants';
 
 const { width, height } = Dimensions.get('window');
 
 const Login = ({ navigation }) => {
+  const url = Constants.manifest2.extra.API_URL;
   const { login } = useContext(AuthContext); // 로그인 함수 가져오기
   const [form, setForm] = useState({ username: '', password: '' });
   const [isAutoLogin, setIsAutoLogin] = useState(false);
@@ -35,8 +37,7 @@ const Login = ({ navigation }) => {
     setLoginError('');
     try {
       // 백엔드 로컬 <-> 서버
-      const response = await axios.post('http://localhost:3000/api/user/login', {
-      // const response = await axios.post('http://dsapoi881.duckdns.org:3123/api/user/login', {
+      const response = await axios.post(url+'/api/user/login', {
         username: form.username,
         password: form.password,
       });

@@ -5,8 +5,12 @@ import * as Location from 'expo-location';
 import Rental from './Rental';
 import ReturnConfirmation from './ReturnConfirmation';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 const RentalStart = ({ navigation }) => {
+  // url 정보
+  const URL = Constants.manifest2.extra.API_URL;
+
   const [location, setLocation] = useState(null); // 위치 상태
   const [errorMsg, setErrorMsg] = useState(null);
   const [isRentalVisible, setIsRentalVisible] = useState(false);
@@ -44,7 +48,7 @@ const RentalStart = ({ navigation }) => {
 
   const wheelchairLocation = async() => {
 
-    const response = await axios.post("http://localhost:3000/api/wheelchair/location");
+    const response = await axios.post(URL+"/api/wheelchair/location");
 
     // axios 추가
     latitude = response.latitude;

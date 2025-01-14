@@ -12,10 +12,12 @@ import {
 import axios from 'axios';
 import BottomNavBar from '../univ/navigation';
 import Header from '../univ/header';
+import Constants from 'expo-constants';
 
 const { width } = Dimensions.get('window');
 
 const BoardScreen = ({ navigation }) => {
+  const url = Constants.manifest2.extra.API_URL;
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +26,7 @@ const BoardScreen = ({ navigation }) => {
     const fetchPosts = async () => {
       try {
         // GET 요청으로 데이터 가져오기
-        const response = await axios.get('http://dsapoi881.duckdns.org:3123/api/board');
+        const response = await axios.get(url+'/api/board/');
         setPosts(response.data); // 받아온 데이터를 상태에 저장
       } catch (error) {
         console.error('게시글을 불러오는 중 오류 발생:', error);
@@ -40,7 +42,7 @@ const BoardScreen = ({ navigation }) => {
     if (usernames[userId]) return usernames[userId]; // 이미 캐싱된 경우 반환
 
     try {
-      const response = await axios.get(`http://dsapoi881.duckdns.org:3123/api/user/${userId}`);
+      const response = await axios.get(url+`api/user/${userId}`);
       const username = response.data.username;
 
       // 캐싱
